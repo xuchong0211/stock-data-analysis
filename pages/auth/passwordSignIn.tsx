@@ -152,7 +152,7 @@ function LoginForm({
               name="username"
               type="text"
               className={inputStyle}
-              defaultValue={loginName}
+              defaultValue={"15527350287"}
               style={{ height: 40 }}
               placeholder="请输入正确的手机号"
             />

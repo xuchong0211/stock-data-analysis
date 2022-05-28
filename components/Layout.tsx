@@ -67,14 +67,14 @@ const Layout: React.FC = function ({ children }) {
               />
             </a>
           </Link>
-          <Link href="/finance" passHref>
+          <Link href="/stocks" passHref>
             <a>
               <MenuIcon
-                label="财务"
+                label="股票"
                 icon={(color) => (
                   <AccountBookOutlined style={{ fontSize: 22, color }} />
                 )}
-                selected={router.pathname.indexOf("/finance") >= 0}
+                selected={router.pathname.indexOf("/stocks") >= 0}
               />
             </a>
           </Link>

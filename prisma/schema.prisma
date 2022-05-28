@@ -36,9 +36,9 @@ model Company {
 }
 
 model Stock {
-  id     String @id
-  name   String
-  status Int
+  id     String  @id
+  name   String?
+  status Int?
 
   criticalPoints CriticalPoint[]
   stockDatas     StockData[]
@@ -55,10 +55,19 @@ model StockData {
   high    String
   low     String
 
-  preClose String
+  preClose String?
+
+  volume String?
+  amount String?
 
   criticalPoints CriticalPoint[]
   CrossPoint     CrossPoint[]
+
+  previous   StockData? @relation(name: "previous", fields: [previousId], references: [id])
+  previousId Int?
+
+  stockDatas StockData[] @relation("previous")
+
 }
 
 model CriticalPoint {
