@@ -41,22 +41,44 @@ model Stock {
   status Int
 
   criticalPoints CriticalPoint[]
+  stockDatas     StockData[]
+}
+
+model StockData {
+  id      Int    @id @default(autoincrement())
+  stock   Stock  @relation(fields: [stockId], references: [id])
+  stockId String
+  date    Int
+  time    String
+  open    String
+  close   String
+  high    String
+  low     String
+
+  preClose String
+
+  criticalPoints CriticalPoint[]
+  CrossPoint     CrossPoint[]
 }
 
 model CriticalPoint {
-  id         Int          @id @default(autoincrement())
-  stock      Stock        @relation(fields: [stockId], references: [id])
-  stockId    String
-  point      String
-  date       Int
-  createdAt  DateTime     @default(now()) @db.Timestamp(6)
-  CrossPoint CrossPoint[]
+  id          Int          @id @default(autoincrement())
+  stock       Stock        @relation(fields: [stockId], references: [id])
+  stockId     String
+  point       String
+  date        Int
+  createdAt   DateTime     @default(now()) @db.Timestamp(6)
+  CrossPoint  CrossPoint[]
+  StockData   StockData?   @relation(fields: [stockDataId], references: [id])
+  stockDataId Int?
 }
 
 model CrossPoint {
   id              Int           @id @default(autoincrement())
   criticalPoint   CriticalPoint @relation(fields: [criticalPointId], references: [id])
   criticalPointId Int
+  stockData       StockData     @relation(fields: [stockDataId], references: [id])
+  stockDataId     Int
   date            Int
   createdAt       DateTime      @default(now()) @db.Timestamp(6)
 }
