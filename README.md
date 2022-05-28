@@ -1,2 +1,2 @@
 # stock-data-analysis
-modeling
+modeling from Mr Xiao
