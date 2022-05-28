@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  name      String?    @db.VarChar(190)
+  phone     String     @unique @db.VarChar(20)
+  company   Company    @relation(fields: [companyId], references: [id])
+  companyId Int
+  roles     UserRole[]
+  createdAt DateTime   @default(now()) @db.Timestamp(6)
+  Discount  Discount[]
+}
+
+model UserRole {
+  id     Int    @id @default(autoincrement())
+  role   String @db.VarChar(30)
+  user   User   @relation(fields: [userId], references: [id])
+  userId Int
+}
+
+model Company {
+  id    Int     @id @default(autoincrement())
+  name  String? @db.VarChar(190)
+  users User[]
+}
+
+model Stock {
+  id     String @id
+  name   String
+  status Int
+
+  criticalPoints CriticalPoint[]
+}
+
+model CriticalPoint {
+  id         Int          @id @default(autoincrement())
+  stock      Stock        @relation(fields: [stockId], references: [id])
+  stockId    String
+  point      String
+  date       Int
+  createdAt  DateTime     @default(now()) @db.Timestamp(6)
+  CrossPoint CrossPoint[]
+}
+
+model CrossPoint {
+  id              Int           @id @default(autoincrement())
+  criticalPoint   CriticalPoint @relation(fields: [criticalPointId], references: [id])
+  criticalPointId Int
+  date            Int
+  createdAt       DateTime      @default(now()) @db.Timestamp(6)
+}
+
+model Invoice {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now()) @db.Timestamp(6)
+  amount      Int
+  title       String?  @db.VarChar(190)
+  description String?  @db.VarChar(190)
+  dueDate     DateTime
+  updatedAt   DateTime @updatedAt
+}
+
+model Discount {
+  id            Int      @id @default(autoincrement())
+  amount        Float?
+  percentAmount Float?
+  name          String   @db.VarChar(50)
+  description   String?  @db.VarChar(190)
+  createdAt     DateTime @default(now()) @db.Timestamp(6)
+  //过期时间
+  expiryDate    DateTime
+  creator       User     @relation(fields: [creatorId], references: [id])
+  creatorId     Int
+}

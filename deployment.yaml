@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: examcard-server
+  name: examcard-server
+  namespace: default
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: examcard-server
+  template:
+    metadata:
+      labels:
+        app: examcard-server
+    spec:
+      containers:
+        - env:
+            - name: TZ
+              value: Asia/Shanghai
+            - name: LOG_URL
+              value: http://couchdb-svc:5984
+            - name: LOG_SOURCE
+              value: examcard_server
+          image: >-
+            ${IMAGE}
+          imagePullPolicy: Always
+          name: examcard-server
+          ports:
+            - containerPort: 3000
+              name: http
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 50m
+              memory: 512Mi
+          volumeMounts:
+            - mountPath: /etc/localtime
+              name: volume-localtime
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: acr-credential-c6c63a12436031a13361512e545490fd
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - hostPath:
+            path: /etc/localtime
+            type: ""
+          name: volume-localtime
