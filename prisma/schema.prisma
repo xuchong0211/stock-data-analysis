@@ -41,10 +41,10 @@ model Stock {
   status Int?
 
   criticalPoints CriticalPoint[]
-  stockDatas     StockData[]
+  StockDateData  StockDateData[]
 }
 
-model StockData {
+model StockDateData {
   id      Int    @id @default(autoincrement())
   stock   Stock  @relation(fields: [stockId], references: [id])
   stockId String
@@ -61,35 +61,32 @@ model StockData {
   amount String?
 
   criticalPoints CriticalPoint[]
-  CrossPoint     CrossPoint[]
 
-  previous   StockData? @relation(name: "previous", fields: [previousId], references: [id])
+  previous   StockDateData? @relation(name: "previous", fields: [previousId], references: [id])
   previousId Int?
 
-  stockDatas StockData[] @relation("previous")
+  stockDateDatas StockDateData[] @relation("previous")
 
 }
 
 model CriticalPoint {
-  id          Int          @id @default(autoincrement())
-  stock       Stock        @relation(fields: [stockId], references: [id])
-  stockId     String
-  point       String
-  date        Int
-  createdAt   DateTime     @default(now()) @db.Timestamp(6)
-  CrossPoint  CrossPoint[]
-  StockData   StockData?   @relation(fields: [stockDataId], references: [id])
-  stockDataId Int?
+  id              Int            @id @default(autoincrement())
+  stock           Stock          @relation(fields: [stockId], references: [id])
+  stockId         String
+  point           String
+  date            Int
+  createdAt       DateTime       @default(now()) @db.Timestamp(6)
+  stockDateData   StockDateData? @relation(fields: [stockDateDataId], references: [id])
+  stockDateDataId Int?
 }
 
-model CrossPoint {
-  id              Int           @id @default(autoincrement())
-  criticalPoint   CriticalPoint @relation(fields: [criticalPointId], references: [id])
-  criticalPointId Int
-  stockData       StockData     @relation(fields: [stockDataId], references: [id])
-  stockDataId     Int
-  date            Int
-  createdAt       DateTime      @default(now()) @db.Timestamp(6)
+model ModelPoint {
+  id        Int      @id @default(autoincrement())
+  date      Int
+  code      String
+  name      String
+  mode      String
+  createdAt DateTime @default(now()) @db.Timestamp(6)
 }
 
 model Invoice {
