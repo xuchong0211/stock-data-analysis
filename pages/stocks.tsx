@@ -35,7 +35,7 @@ const Page = () => {
       <Tabs
         activeKey={activeTab}
         onChange={(tab) => {
-          router.push(`/finance?tab=${tab}`, undefined, {
+          router.push(`/stocks?tab=${tab}`, undefined, {
             shallow: true,
           });
         }}

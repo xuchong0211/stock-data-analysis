@@ -4,7 +4,6 @@ import format from "date-fns/format";
 import { sumBy } from "lodash";
 import React, { useState } from "react";
 import CustomerSearch from "../common/CustomerSearch";
-import InvoiceTemplateSelect from "./InvoiceTemplateSelect";
 
 function createInvoice(params: Invoice) {
   return fetch("/api/invoice", {
@@ -46,21 +45,6 @@ export default function CreateInvoiceModal({
     >
       <div>
         <Form layout="vertical" form={form}>
-          <Form.Item label="支付模版" name="templateId">
-            <div style={{ width: "50%" }}>
-              <InvoiceTemplateSelect
-                key={schoolId}
-                schoolId={schoolId}
-                onChange={(template) => {
-                  console.log("invoice template selected", template);
-                  setInvoiceTemplate(template);
-                  form.setFieldsValue({
-                    templateId: template?.id,
-                  });
-                }}
-              />
-            </div>
-          </Form.Item>
           <Form.Item label="客户" name="customerId">
             <CustomerSearch
               onChange={(customer) => {

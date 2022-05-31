@@ -1,6 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../db/client";
-import { getDiscountByCustomerId } from "../../../prisma/service/discount";
 import { handlerWithLogin } from "../../../utils/requestHandler";
 
 async function handler(
@@ -57,13 +56,9 @@ async function handler(
     });
     console.log("get invoices ", result);
 
-    let discounts: any[] = [];
 
-    if (!(result?.payments && result?.payments.length > 0)) {
-      discounts = await getDiscountByCustomerId(result?.customerId);
-    }
 
-    res.status(200).json({ ...result, discounts });
+    res.status(200).json({ ...result });
     return;
   }
 
